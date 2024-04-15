@@ -33,8 +33,8 @@ const maxAmount = 15 * 10 ** 6; // 最多买入jup数量
 node src/index.js
 ```
 
-[![X (formerly Twitter) Follow](https://img.shields.io/twitter/follow/crypto0xLe?link=https%3A%2F%2Ftwitter.com%2Fintent%2Ffollow%3Fscreen_name%3Dcrypto0xLeo)](https://twitter.com/intent/follow?screen_name=crypto0xLeo)
+[![X (formerly Twitter) Follow](https://img.shields.io/twitter/follow/crypto0xLe)](https://twitter.com/intent/follow?screen_name=crypto0xLeo)
 
-[![GitHub followers](https://img.shields.io/github/followers/shuail0?link=https%3A%2F%2Fgithub.com%2Fshuail0)](https://github.com/shuail0)
+[![GitHub followers](https://img.shields.io/github/followers/shuail0)](https://github.com/shuail0)
 
 
