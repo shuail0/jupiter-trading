@@ -68,8 +68,12 @@ const wallets = convertCSVToObjectSync(wallet_path);
                     break;
                 }
             }
-
-
+        }
+        if (i < wallets.length - 1) {
+            // 随机暂停 5-10分钟
+            const sleepTime = Math.floor(Math.random() * (10 - 5) + 5);
+            logger.info(`休息${sleepTime}分钟后继续...`)
+            await sleep(sleepTime);
         }
     }
 
