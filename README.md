@@ -33,4 +33,5 @@ const maxAmount = 15 * 10 ** 6; // 最多买入jup数量
 node src/index.js
 ```
 
-![X (formerly Twitter) Follow](https://img.shields.io/twitter/follow/crypto0xLeo)
+![X (formerly Twitter) Follow(https://img.shields.io/twitter/follow/crypto0xLeo)](https://twitter.com/intent/follow?screen_name=crypto0xLeo)
+![github license(https://img.shields.io/github/license/shuail0/jupiter-trading)](https://github.com/shuail0/jupiter-trading)
