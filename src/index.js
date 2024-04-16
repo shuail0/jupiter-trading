@@ -50,7 +50,7 @@ const wallets = convertCSVToObjectSync(wallet_path);
             let txid = await jupiter.swap(tokenIn, tokenOut, amount, 'ExactOut');
             if (txid) {
                 logger.success(`交易成功:https://solscan.io/tx/${txid}`)
-                getSPLBalance(connection, wallet.publicKey, jupMint).then(balance => {
+                getSPLBalance(connection, wallet.publicKey, tokenOut).then(balance => {
                     logger.info(`JUP余额: ${balance.uiAmount}`);
                 })
                 // 获取当前本地时间

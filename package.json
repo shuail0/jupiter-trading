@@ -19,6 +19,7 @@
     "cross-fetch": "^4.0.0",
     "dotenv": "^16.4.5",
     "papaparse": "^5.4.1",
-    "promise-retry": "^2.0.1"
+    "promise-retry": "^2.0.1",
+    "readline-sync": "^1.4.10"
   }
 }
