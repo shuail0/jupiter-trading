@@ -57,7 +57,7 @@ const wallets = convertCSVToObjectSync(wallet_path);
                     })
                     // 获取当前本地时间
                     date = new Date().toLocaleString();
-                    await appendObjectToCSV({ date, ...wt }, '../logs/Sucess.csv')
+                    await appendObjectToCSV({ date, ...wt }, './logs/Sucess.csv')
                     break;
                 } else {
                     num++;
@@ -66,7 +66,7 @@ const wallets = convertCSVToObjectSync(wallet_path);
                     if (num === MAX_RETRY) {
                         logger.error('重试次数已达上限');
                         date = new Date().toLocaleString();
-                        await appendObjectToCSV({ date, ...wt, Error: '重试次数已达上限' }, '../logs/Error.csv')
+                        await appendObjectToCSV({ date, ...wt, Error: '重试次数已达上限' }, './logs/Error.csv')
                         break;
                     }
                 }
@@ -77,7 +77,7 @@ const wallets = convertCSVToObjectSync(wallet_path);
                 if (num === MAX_RETRY) {
                     logger.error('重试次数已达上限');
                     date = new Date().toLocaleString();
-                    await appendObjectToCSV({ date, ...wt, Error: error }, '../logs/Error.csv')
+                    await appendObjectToCSV({ date, ...wt, Error: error }, './logs/Error.csv')
                     break;
                 }
 
