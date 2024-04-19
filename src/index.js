@@ -16,7 +16,7 @@ const pwd = readlineSync.question('Please enter your password: ', {
 });
 
 const connection = new Connection(''); // RPC，到https://www.helius.dev/注册获取
-const wallet_path = './SOLTestWalle.csv'; // 钱包文件路径
+const wallet_path = ''; // 钱包文件路径
 const tokenIn = 'So11111111111111111111111111111111111111112';  // 支付Token，SOL Token 地址
 const tokenOut = 'JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN'; // 获得Token，JUP Token 地址
 const minAmount = 10 * 10 ** 6; // 最少买入jup数量
@@ -37,27 +37,40 @@ const wallets = convertCSVToObjectSync(wallet_path);
         const MAX_RETRY = 5;
         let num = 0;
         let date;
-        while (num < MAX_RETRY) {
-            // 查询SOL余额
-            const SOLBalance = await connection.getBalance(wallet.publicKey);
-            if (SOLBalance < 0.0003 * 10 ** 9) {
-                logger.error('SOL余额不足');
-                break;
-            }
-            const amount = Math.floor(Math.random() * (maxAmount - minAmount) + minAmount);
 
-            logger.info('wallet address', wt.Address, 'SOLBalance:', SOLBalance, 'trade amount:', amount);
-            let txid = await jupiter.swap(tokenIn, tokenOut, amount, 'ExactOut');
-            if (txid) {
-                logger.success(`交易成功:https://solscan.io/tx/${txid}`)
-                getSPLBalance(connection, wallet.publicKey, tokenOut).then(balance => {
-                    logger.info(`JUP余额: ${balance.uiAmount}`);
-                })
-                // 获取当前本地时间
-                date = new Date().toLocaleString();
-                await appendObjectToCSV({ date, ...wt }, '../logs/Sucess.csv')
-                break;
-            } else {
+        while (num < MAX_RETRY) {
+            try {
+                // 查询SOL余额
+                const SOLBalance = await connection.getBalance(wallet.publicKey);
+                if (SOLBalance < 0.0003 * 10 ** 9) {
+                    logger.error('SOL余额不足');
+                    break;
+                }
+                const amount = Math.floor(Math.random() * (maxAmount - minAmount) + minAmount);
+
+                logger.info('wallet address', wt.Address, 'SOLBalance:', SOLBalance, 'trade amount:', amount);
+                let txid = await jupiter.swap(tokenIn, tokenOut, amount, 'ExactOut');
+                if (txid) {
+                    logger.success(`交易成功:https://solscan.io/tx/${txid}`)
+                    getSPLBalance(connection, wallet.publicKey, tokenOut).then(balance => {
+                        logger.info(`JUP余额: ${balance.uiAmount}`);
+                    })
+                    // 获取当前本地时间
+                    date = new Date().toLocaleString();
+                    await appendObjectToCSV({ date, ...wt }, '../logs/Sucess.csv')
+                    break;
+                } else {
+                    num++;
+                    logger.error('交易失败,休息6秒后重试...');
+                    await sleep(0.1);
+                    if (num === MAX_RETRY) {
+                        logger.error('重试次数已达上限');
+                        date = new Date().toLocaleString();
+                        await appendObjectToCSV({ date, ...wt, Error: '重试次数已达上限' }, '../logs/Error.csv')
+                        break;
+                    }
+                }
+            } catch (error) {
                 num++;
                 logger.error('交易失败,休息6秒后重试...');
                 await sleep(0.1);
@@ -67,6 +80,7 @@ const wallets = convertCSVToObjectSync(wallet_path);
                     await appendObjectToCSV({ date, ...wt, Error: error }, '../logs/Error.csv')
                     break;
                 }
+
             }
         }
         if (i < wallets.length - 1) {
