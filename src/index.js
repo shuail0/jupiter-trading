@@ -33,7 +33,7 @@ const wallets = convertCSVToObjectSync(wallet_path);
         const privateKey = decryptUsingAESGCM(wt.a, wt.e, wt.i, wt.s, pwd)
         const wallet = new Wallet(Keypair.fromSecretKey(bs58.decode(privateKey)));
         const jupiter = new Jupiter(connection, wallet);
-
+        const jupBalanceInfo = await getSPLBalance(connection, wallet.publicKey, tokenOut);
         const MAX_RETRY = 5;
         let num = 0;
         let date;
@@ -46,6 +46,19 @@ const wallets = convertCSVToObjectSync(wallet_path);
                     logger.error('SOL余额不足');
                     break;
                 }
+
+                const currentJupBalanceInfo = await getSPLBalance(connection, wallet.publicKey, tokenOut);
+                if (currentJupBalanceInfo.amount !== jupBalanceInfo.amount) {
+                  logger.info(`钱包:${wt.Address}余额发生变化, SOL余额:${SOLBalance}, 初始JUP余额:${jupBalanceInfo.uiAmount}, 当前JUP余额:${currentJupBalanceInfo.uiAmount}`);
+                  if (currentJupBalanceInfo.amount > jupBalanceInfo.amount) {
+                    logger.success(`当前jup余额大于初始余额,购买成功`);
+                    // 获取当前本地时间
+                    date = new Date().toLocaleString();
+                    await appendObjectToCSV({ date, ...wt }, './logs/StakeSucess.csv')
+                    break;
+                  }
+                }
+
                 const amount = Math.floor(Math.random() * (maxAmount - minAmount) + minAmount);
 
                 logger.info('wallet address', wt.Address, 'SOLBalance:', SOLBalance, 'trade amount:', amount);
