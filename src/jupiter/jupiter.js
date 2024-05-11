@@ -128,6 +128,11 @@ class Jupiter {
 
     async swap(inputMint, outputMint, amount, swapMode='ExactIn', slippageBps = 1000) {
         const quoteResponse = await this.getQuote(inputMint, outputMint, amount, swapMode, slippageBps);
+
+        if (quoteResponse.errorCode === 'COULD_NOT_FIND_ANY_ROUTE') {
+            logger.error('getQuote.error:', quoteResponse.error);
+            throw new Error(quoteResponse.error);
+        };
         const swapResult = await (
             await fetch(`${this.baaseUrl}/swap`, {
                 method: 'POST',

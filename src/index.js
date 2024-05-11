@@ -32,8 +32,8 @@ const pwd = readlineSync.question('Please enter your password: ', {
     hideEchoBack: true // 密码不回显
 });
 
-const connection = new Connection('https://mainnet.helius-rpc.com/?api-key=aac42329-3edf-4433-94ec-870600c2ba9e'); // RPC，到https://www.helius.dev/注册获取
-const wallet_path = '/Users/lishuai/Documents/crypto/bockchainbot/SOLTestWalle加密.csv'; // 钱包文件路径
+const connection = new Connection(''); // RPC，到https://www.helius.dev/注册获取
+const wallet_path = ''; // 钱包文件路径
 const tokenIn = 'So11111111111111111111111111111111111111112';  // 支付Token，SOL Token 地址
 let minAmount = 0.1; // 最少收到币数
 let maxAmount = 0.13; // 最多收到币数
@@ -89,8 +89,10 @@ const wallets = convertCSVToObjectSync(wallet_path);
                         break;
                     }
                 }
-                const amount = Math.floor(Math.random() * (maxAmount - minAmount) + minAmount);
-                logger.info('wallet address:', wt.Address, 'SOLBalance:', SOLBalance, 'trade Token:',tokenOut,' trade amount:', amount);
+                let amount = Math.floor(Math.random() * (maxAmount - minAmount) + minAmount);
+                amount = Math.floor(amount / 10000) * 10000;
+
+                logger.info('wallet address:', wt.Address, 'SOLBalance:', SOLBalance, 'tokenIn:', tokenIn, SOLBalance, 'trade Token:', tokenOut, ' trade amount:', amount);
                 let txid = await jupiter.swap(tokenIn, tokenOut, amount, 'ExactOut');
                 if (txid) {
                     logger.success(`交易成功:https://solscan.io/tx/${txid}`)
