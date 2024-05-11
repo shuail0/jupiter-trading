@@ -32,8 +32,8 @@ const pwd = readlineSync.question('Please enter your password: ', {
     hideEchoBack: true // 密码不回显
 });
 
-const connection = new Connection(''); // RPC，到https://www.helius.dev/注册获取
-const wallet_path = ''; // 钱包文件路径
+const connection = new Connection('https://mainnet.helius-rpc.com/?api-key=aac42329-3edf-4433-94ec-870600c2ba9e'); // RPC，到https://www.helius.dev/注册获取
+const wallet_path = '/Users/lishuai/Documents/crypto/bockchainbot/SOLTestWalle加密.csv'; // 钱包文件路径
 const tokenIn = 'So11111111111111111111111111111111111111112';  // 支付Token，SOL Token 地址
 let minAmount = 0.1; // 最少收到币数
 let maxAmount = 0.13; // 最多收到币数
@@ -99,19 +99,20 @@ const wallets = convertCSVToObjectSync(wallet_path);
                     await appendObjectToCSV({ date, ...wt }, successPath)
                     break;
                 } else {
-                    num++;
-                    logger.error('交易失败,休息6秒后重试...');ç
-                    await sleep(0.1);
-                    if (num === MAX_RETRY) {
-                        logger.error('重试次数已达上限');
-                        date = new Date().toLocaleString();
-                        await appendObjectToCSV({ date, ...wt, Error: '重试次数已达上限' }, errorPath)
-                        break;
-                    }
+                    // num++;
+                    // logger.error('交易失败,休息6秒后重试...');
+                    // await sleep(0.1);
+                    // if (num === MAX_RETRY) {
+                    //     logger.error('重试次数已达上限');
+                    //     date = new Date().toLocaleString();
+                    //     await appendObjectToCSV({ date, ...wt, Error: '重试次数已达上限' }, errorPath)
+                    //     break;
+                    // }
+                    throw new Error('交易失败');
                 }
             } catch (error) {
                 num++;
-                logger.error('交易失败,休息6秒后重试...');
+                logger.error(`交易报错:${error},息6秒后重试...`);
                 await sleep(0.1);
                 if (num === MAX_RETRY) {
                     logger.error('重试次数已达上限');
