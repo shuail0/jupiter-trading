@@ -57,9 +57,8 @@ const wallets = convertCSVToObjectSync(wallet_path);
     for (let i = 0; i < wallets.length; i++) {
         const tokenOut = outputTokenList[Math.floor(Math.random() * outputTokenList.length)];
         let tokenMint = await getMint(connection, new PublicKey(tokenOut));
-        minAmount = minAmount * 10 ** tokenMint.decimals; // 最少收到币数
-        maxAmount = maxAmount * 10 ** tokenMint.decimals; // 最少收到币数
-
+        const randomMin = minAmount * 10 ** tokenMint.decimals; // 最少收到币数
+        const randomMax = maxAmount * 10 ** tokenMint.decimals; // 最少收到币数
 
         const wt = wallets[i];
         const privateKey = decryptUsingAESGCM(wt.a, wt.e, wt.i, wt.s, pwd)
@@ -89,7 +88,7 @@ const wallets = convertCSVToObjectSync(wallet_path);
                         break;
                     }
                 }
-                let amount = Math.floor(Math.random() * (maxAmount - minAmount) + minAmount);
+                let amount = Math.floor(Math.random() * (randomMax - randomMin) + randomMin);
                 amount = Math.floor(amount / 10000) * 10000;
 
                 logger.info('wallet address:', wt.Address, 'SOLBalance:', SOLBalance, 'tokenIn:', tokenIn, SOLBalance, 'trade Token:', tokenOut, ' trade amount:', amount);
