@@ -35,8 +35,9 @@ const pwd = readlineSync.question('Please enter your password: ', {
 const connection = new Connection(''); // RPC，到https://www.helius.dev/注册获取
 const wallet_path = ''; // 钱包文件路径
 const tokenIn = 'So11111111111111111111111111111111111111112';  // 支付Token，SOL Token 地址
-let minAmount = 0.1; // 最少收到币数
-let maxAmount = 0.13; // 最多收到币数
+let minAmount = 0.13; // 最少买入金额
+let maxAmount = 0.15; // 最多买入金额
+const swapMode = 'ExactIn'; // 交易模式，ExactOut(按接收到的数量交易) 或 ExactIn （按支付的数量交易）
 // LST Token 地址,从中随机选择一个买入。
 const outputTokenList = [
     '5oVNBeEEQvYi1cX3ir8Dx5n1P7pdxydbGF2X4TxVusJm', // Infinitie
@@ -92,7 +93,7 @@ const wallets = convertCSVToObjectSync(wallet_path);
                 amount = Math.floor(amount / 10000) * 10000;
 
                 logger.info('wallet address:', wt.Address, 'SOLBalance:', SOLBalance, 'tokenIn:', tokenIn, SOLBalance, 'trade Token:', tokenOut, ' trade amount:', amount);
-                let txid = await jupiter.swap(tokenIn, tokenOut, amount, 'ExactOut');
+                let txid = await jupiter.swap(tokenIn, tokenOut, amount, swapMode);
                 if (txid) {
                     logger.success(`交易成功:https://solscan.io/tx/${txid}`)
                     // 获取当前本地时间
