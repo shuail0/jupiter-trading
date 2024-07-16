@@ -32,8 +32,8 @@ const pwd = readlineSync.question('Please enter your password: ', {
     hideEchoBack: true // 密码不回显
 });
 
-const connection = new Connection('https://mainnet.helius-rpc.com/?api-key=aac42329-3edf-4433-94ec-870600c2ba9e'); // RPC，到https://www.helius.dev/注册获取
-const wallet_path = '/Users/lishuai/Documents/crypto/bockchainbot/SOLTestWalle加密.csv'; // 钱包文件路径
+const connection = new Connection(''); // RPC，到https://www.helius.dev/注册获取
+const wallet_path = ''; // 钱包文件路径
 const tokenOut = 'So11111111111111111111111111111111111111112';  // 支付Token，SOL Token 地址
 const swapMode = 'ExactIn'; // 交易模式，ExactOut(按接收到的数量交易) 或 ExactIn （按支付的数量交易）
 // LST Token 地址,遍历卖出。
